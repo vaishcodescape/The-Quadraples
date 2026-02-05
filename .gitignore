@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Models - TOO LARGE for GitHub (2GB limit exceeded)
+*.gguf
+*.bin
+
+# Environment
+.env
