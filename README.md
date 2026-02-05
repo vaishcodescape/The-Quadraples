@@ -217,7 +217,3 @@ spam_ai/
 ├── docker-compose.yml
 └── requirements.txt
 ```
-
-## Ethical notice
-
-For **educational and defensive use only**. No real attacker engagement; offline simulation only.
