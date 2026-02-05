@@ -1,0 +1,17 @@
+# Keep image small and build fast
+__pycache__
+*.py[cod]
+.git
+.gitignore
+.env
+.env.*
+*.md
+data/
+Dockerfile*
+docker-compose*
+.dockerignore
+*.ipynb
+main/
+spam_ai/
+# Don't ignore models directory - we need the .joblib files
+!models/*.joblib

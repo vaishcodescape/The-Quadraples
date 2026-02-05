@@ -11,6 +11,7 @@ An intelligent bot that:
 Uses Ollama for local LLM inference (CPU-friendly).
 """
 
+import os
 import re
 import json
 import requests
@@ -18,20 +19,16 @@ from typing import Optional
 from dataclasses import dataclass
 from enum import Enum
 
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from src.preprocess import preprocess_message
-from src.features import extract_features
-from src.extract_intel import extract_threat_intelligence
+from extraction.preprocess import preprocess_message
+from extraction.features import extract_features
+from extraction.extract_intel import extract_threat_intelligence
+from config import MODEL_DIR
 
 # Try to load spam detection models
 try:
     import joblib
-    SPAM_MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models')
-    SPAM_DETECTOR = joblib.load(os.path.join(SPAM_MODEL_PATH, 'spam_detector.joblib'))
-    SPAM_VECTORIZER = joblib.load(os.path.join(SPAM_MODEL_PATH, 'spam_vectorizer.joblib'))
+    SPAM_DETECTOR = joblib.load(os.path.join(MODEL_DIR, "spam_detector.joblib"))
+    SPAM_VECTORIZER = joblib.load(os.path.join(MODEL_DIR, "spam_vectorizer.joblib"))
     SPAM_DETECTION_AVAILABLE = True
 except Exception as e:
     SPAM_DETECTOR = None
@@ -876,7 +873,7 @@ class ScamBaitingBot:
             'llm_used': self.llm_available
         }
     
-    def get_summary(self) -> dict:
+    def get_conversation_summary(self) -> dict:
         """Get conversation summary with extracted intel."""
         return {
             'total_turns': self.turn_count,
@@ -945,7 +942,7 @@ def run_cli():
             print(f"   Scammer Goal: {result['scam_analysis'].get('scammer_goal', 'unknown')}")
     
     # Show summary
-    summary = bot.get_summary()
+    summary = bot.get_conversation_summary()
     print("\n" + "=" * 70)
     print("📊 CONVERSATION SUMMARY")
     print("=" * 70)
